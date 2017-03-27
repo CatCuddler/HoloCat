@@ -20,6 +20,10 @@ public class GazeGestureManager : MonoBehaviour {
 			if (FocusedObject != null) {
 				FocusedObject.SendMessageUpwards("OnSelect");
 			}
+			if (FocusedObject.name.Contains("spatial-mapping-surface")) {
+				GameObject cat = GameObject.FindGameObjectWithTag("Cat");
+				cat.SendMessage("OnReset");
+			}
 		};
 		recognizer.StartCapturingGestures();
 	}
