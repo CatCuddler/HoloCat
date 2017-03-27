@@ -8,8 +8,7 @@ public class WorldCursor : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		meshRenderer = this.GetComponent<MeshRenderer>();
-
+	    meshRenderer = this.GetComponent<MeshRenderer>();
 	}
 	
 	// Update is called once per frame
@@ -19,8 +18,6 @@ public class WorldCursor : MonoBehaviour {
 		Vector3 gazeDirection = Camera.main.transform.forward;
 
 		RaycastHit hitInfo;
-
-        Debug.Log(this.transform.position.x + " " + this.transform.position.y + " " + this.transform.position.z);
 
 		if (Physics.Raycast(headPosition, gazeDirection, out hitInfo)) {
 			meshRenderer.enabled = true;
