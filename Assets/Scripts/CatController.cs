@@ -23,6 +23,9 @@ public class CatController : MonoBehaviour {
 			if (Input.GetKeyDown(KeyCode.Space)) {
 				OnSelect();
 			}
+			if (Input.GetKeyDown(KeyCode.R)) {
+				OnReset();
+			}
 		}
 	}
 
@@ -64,19 +67,21 @@ public class CatController : MonoBehaviour {
 		animator.SetInteger("State", state);
 	}
 
-	public void OnIdle() {
-		moveCat(0);
-	}
-
-	public void OnWalk() {
+	void OnWalk() {
 		moveCat(1);
 	}
 
-	public void OnRun() {
+	void OnRun() {
 		moveCat(2);
 	}
 
 	void OnReset() {
-		state = 0;
+		moveCat(0);
+
+		// Get cursor position
+		GameObject cursor = GameObject.FindGameObjectWithTag("Cursor");
+		transform.localPosition = cursor.transform.localPosition;
+
+		transform.localRotation = new Quaternion(0, 130, 0, 0);
 	}
 }

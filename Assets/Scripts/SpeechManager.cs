@@ -11,19 +11,13 @@ public class SpeechManager : MonoBehaviour {
 	// Use this for initialization
 	void Start() {
 		keywords.Add("Reset", () => {
+			Debug.Log("Speech recognition: Reset");
 			// Call the OnReset method on every descendant object.
 			this.BroadcastMessage("OnReset");
 		});
 
-		keywords.Add("Idle", () => {
-			var focusObject = GazeGestureManager.Instance.FocusedObject;
-			if (focusObject != null) {
-				// Call the OnIdle method on just the focused object.
-				focusObject.SendMessage("OnIdle");
-			}
-		});
-
 		keywords.Add("Run", () => {
+			Debug.Log("Speech recognition: Run");
 			var focusObject = GazeGestureManager.Instance.FocusedObject;
 			if (focusObject != null) {
 				// Call the OnRun method on just the focused object.
@@ -32,6 +26,7 @@ public class SpeechManager : MonoBehaviour {
 		});
 
 		keywords.Add("Walk", () => {
+			Debug.Log("Speech recognition: Walk");
 			var focusObject = GazeGestureManager.Instance.FocusedObject;
 			if (focusObject != null) {
 				// Call the OnWalk method on just the focused object.
