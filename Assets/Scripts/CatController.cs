@@ -19,17 +19,11 @@ public class CatController : MonoBehaviour {
 	void Update () {
 		transform.Translate(Vector3.forward * Time.deltaTime * speed);
 
-		if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.Joystick1Button0)) {
-			state = 1;
-		} else if (Input.GetKeyDown(KeyCode.R) || Input.GetKeyDown(KeyCode.Joystick1Button1)) {
-			state = 2;
-		} else if (Input.GetKeyDown(KeyCode.I) || Input.GetKeyDown(KeyCode.Joystick1Button2)) {
-			state = 0;
-		} else if (Input.GetKeyDown(KeyCode.Space)) {
-			OnSelect();
+		if (Application.isEditor) {
+			if (Input.GetKeyDown(KeyCode.Space)) {
+				OnSelect();
+			}
 		}
-
-		moveCat();
 	}
 
 	// Called by GazeGestureManager when the user performs a Select gesture
@@ -37,32 +31,52 @@ public class CatController : MonoBehaviour {
 		Debug.Log("OnSelect");
 
 		// If the hologram has no Rigidbody component, add one to enable physics.
-		if (!this.GetComponent<Rigidbody>()) {
-			var rigidbody = this.gameObject.AddComponent<Rigidbody>();
-			rigidbody.collisionDetectionMode = CollisionDetectionMode.Continuous;
+		if (!Application.isEditor) {
+			if (!this.GetComponent<Rigidbody>()) {
+				var rigidbody = this.gameObject.AddComponent<Rigidbody>();
+				rigidbody.collisionDetectionMode = CollisionDetectionMode.Continuous;
+			}
 		}
 
-		state += 1;
+		moveCat(state + 1);
 
 	}
 
-	private void moveCat() {
+	private void moveCat(int catState) {
+
+		state = catState;
 
 		if (state > 2) {
 			state = 0;
 		}
 
-		if (state == 1) {
+		if (state == 0) {
+			speed = 0.0f;
+			Debug.Log("Idle");
+		} else if (state == 1) {
 			speed = 0.1f;
 			Debug.Log("Walk");
 		} else if (state == 2) {
 			speed = 0.5f;
 			Debug.Log("Run");
-		} else if (state == 0) {
-			speed = 0.0f;
-			Debug.Log("Idle");
 		}
 
 		animator.SetInteger("State", state);
+	}
+
+	public void OnIdle() {
+		moveCat(0);
+	}
+
+	public void OnWalk() {
+		moveCat(1);
+	}
+
+	public void OnRun() {
+		moveCat(2);
+	}
+
+	void OnReset() {
+		state = 0;
 	}
 }
